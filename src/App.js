@@ -1,25 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+
+function Square({value, onSquareClick}) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <button className="square" onClick={onSquareClick}>
+      {value}
+    </button>
+  );
+}
+
+function Board() {
+  return (
+    <div className="game-container">
+      <div className="board-row">
+        <Square value="?" onSquareClick={() => {}} />
+        <Square value="?" onSquareClick={() => {}} />
+        <Square value="?" onSquareClick={() => {}} />
+      </div>
+      <div className="board-row">
+        <Square value="?" onSquareClick={() => {}} />
+        <Square value="?" onSquareClick={() => {}} />
+        <Square value="?" onSquareClick={() => {}} />
+      </div>
+      <div className="board-row">
+        <Square value="?" onSquareClick={() => {}} />
+        <Square value="?" onSquareClick={() => {}} />
+        <Square value="?" onSquareClick={() => {}} />
+      </div>
     </div>
   );
 }
 
-export default App;
+export default Board;

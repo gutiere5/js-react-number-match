@@ -36,3 +36,30 @@
     transform: rotate(360deg);
   }
 }
+
+.square {
+  width: 100px;
+  height: 100px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #000000;
+  font-size: large;
+  font-weight: bold;
+  line-height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  text-align: center;
+  float: left;
+  cursor: pointer;
+}
+
+.board-row{
+  display: flex;
+}
+
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+}
