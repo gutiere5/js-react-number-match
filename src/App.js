@@ -1,62 +1,47 @@
 import './App.css';
 import { useState } from 'react';
 import { motion } from 'motion/react';
+import Board from './components/Board';
+import { calculateDraw, calculateWinner } from './utils/gameLogic';
 
-function Square({ value, onSquareClick, isWinningSquare }) {
-  return (
-    <motion.button
-      whileHover={{ scale: value === "?" ? 1.05 : 1 }}
-      whileTap={{ scale: value === "?" ? 0.95 : 1 }}
-      onClick={onSquareClick}
-      className={`square ${isWinningSquare ? 'winning' : ''} ${value !== "?" ? 'filled' : ''}`}
-    >
-      {value === "1" && (
-        <motion.div
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          className="player-1"
-        >
-          1
-        </motion.div>
-      )}
-      {value === "2" && (
-        <motion.div
-          initial={{ scale: 0, rotate: 180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          className="player-2"
-        >
-          2
-        </motion.div>
-      )}
-    </motion.button>
-  );
-}
+export default function Game() {
+  const [history, setHistory] = useState([Array(9).fill("?")]);
+  const [currentMove, setCurrentMove] = useState(0);
+  const currentSquares = history[currentMove];
+  const turn1IsNext = currentMove % 2 === 0;
 
-export default function Board() {
-  const [squares, setSquares] = useState(Array(9).fill("?"));
-  const [turn1IsNext, setTurnIsNext] = useState(true);
+  const result = calculateWinner(currentSquares);
+  const winner = result?.winner;
+  const isDraw = calculateDraw(currentSquares);
 
-  function handleClick(i) {
-    if (calculateWinner(squares)?.winner || squares[i] !== "?") {
-      return;
-    }
-    const nextSquares = squares.slice();
-    nextSquares[i] = turn1IsNext ? "1" : "2";
-    setSquares(nextSquares);
-    setTurnIsNext(!turn1IsNext);
+
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+  };
+
+  const moves = history.map((squares, move) => {
+    if (move === 0) return null;
+
+    return (
+      <li key={move}>
+        <button onClick={() => jumpTo(move)} className='history-button'>
+          {move}
+        </button>
+      </li>
+    );
+  }).filter(Boolean);
+
+  function handlePlay(nextSquares) {
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length - 1);
   }
 
   function handleReset() {
-    setSquares(Array(9).fill("?"));
-    setTurnIsNext(true);
+    setHistory([Array(9).fill("?")]);
+    setCurrentMove(0);
   }
-
-  const result = calculateWinner(squares);
-  const winner = result?.winner;
-  const winningLine = result?.line || [];
-  const isDraw = !winner && squares.every(square => square !== "?");
 
   return (
     <div className="game-container">
@@ -108,41 +93,20 @@ export default function Board() {
           </motion.div>
 
           {/* Game Board */}
-          <div className='board'>
-            {squares.map((square, index) => (
-              <Square key={index} value={square} onSquareClick={() => handleClick(index)} isWinningSquare={winningLine.includes(index)} />
-            ))}
-          </div>
+          <div > <Board turn1IsNext={turn1IsNext} onPlay={handlePlay} squares={currentSquares} /> </div>
 
           {/* Reset Button */}
-          <button onClick={handleReset} className='reset-button'>
-            <span className='reset-icon'>↻</span>
-            New Game
-          </button>
+          <div className="bottom-container">
+            <button onClick={handleReset} className='reset-button'>
+              <span className='reset-icon'>↻</span>
+              New Game
+            </button>
+            <ol className='game-history'>
+              {moves}
+            </ol>
+          </div>
         </div>
       </div>
     </div >
   );
-}
-
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    const firstSquare = squares[a];
-    if (firstSquare && firstSquare !== "?" && firstSquare === squares[b] && firstSquare === squares[c]) {
-      return { winner: firstSquare, line: lines[i] };
-    }
-  }
-  return null;
 }

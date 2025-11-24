@@ -6,6 +6,7 @@
 
 .game-container {
   min-height: 100vh;
+  max-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,7 +18,8 @@
 }
 
 .game-card {
-  max-width: 500px;
+  max-width: 550px;
+  max-height: 95vh;
   width: 100%;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
@@ -55,10 +57,9 @@
 }
 
 .player-badge {
-  display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10x 16px;
+  padding: 10px 16px;
   border-radius: 20px;
   border: 2px solid #e2e8f0;
   background: white;
@@ -175,9 +176,17 @@
 }
 
 /* Reset Button */
+.bottom-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .reset-button {
+  flex-shrink: 0;
   width: 100%;
-  padding: 16px;
+  height: 48px;
+  padding: 0;
   border: none;
   border-radius: 12px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -205,6 +214,53 @@
 .reset-icon {
   font-size: 1.5rem;
 }
+
+.game-history {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 4px;
+  justify-content: center;
+}
+
+.game-history li {
+  list-style: none;
+}
+
+.history-button {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: .95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.history-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.history-button:active {
+  transform: translateY(0);
+}
+
+.history-icon {
+  display: none;
+}
+
 
 /* Responsive */
 @media (max-width: 640px) {
