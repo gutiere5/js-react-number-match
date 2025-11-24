@@ -14,7 +14,7 @@ You need to have Node.js and npm installed on your machine.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/your_username/number-match.git](https://github.com/gutiere5/js-react-number-match.git
+   git clone github.com/gutiere5/js-react-number-match.git
    ```
 2. Navigate to the project directory
    ```sh
